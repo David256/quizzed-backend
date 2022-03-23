@@ -43,7 +43,7 @@ describe('Result', () => {
         .end((err, res) => {
           expect(err).is.null;
           expect(res).has.status(404);
-          expect(res.body).has.property('error');
+          expect(res.body).has.property('message');
           done();
         });
     });
@@ -141,7 +141,7 @@ describe('Result', () => {
         .end((err, res) => {
           expect(err).is.null;
           expect(res).has.status(404);
-          expect(res.body).has.property('error');
+          expect(res.body).has.property('message');
           done();
         });
     });
@@ -198,7 +198,7 @@ describe('Result', () => {
         .end((err, res) => {
           expect(err).is.null;
           expect(res).has.status(404);
-          expect(res.body).has.property('error');
+          expect(res.body).has.property('message');
           done();
         });
     });
