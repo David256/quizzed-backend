@@ -6,7 +6,7 @@ const router = express.Router();
 
 const openapiSpecification = swaggerJsdoc({
   definition: {
-    openapi: '3.0.0',
+    openapi: '3.0.3',
     info: {
       title: 'The Quizzed API Rest documentation',
       version: '1.0.0',
@@ -16,6 +16,8 @@ const openapiSpecification = swaggerJsdoc({
   apis: [
     './src/routes/quizzes.js',
     './src/routes/results.js',
+    './src/models/quiz.js',
+    './src/models/results.js',
   ],
 });
 
