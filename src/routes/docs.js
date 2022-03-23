@@ -17,7 +17,7 @@ const openapiSpecification = swaggerJsdoc({
     './src/routes/quizzes.js',
     './src/routes/results.js',
     './src/models/quiz.js',
-    './src/models/results.js',
+    './src/models/result.js',
   ],
 });
 
