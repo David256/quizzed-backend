@@ -39,7 +39,7 @@ app.use(api);
 
 const port = app.get('port');
 const cb = () => {
-  log.info('Express', `Server on: http://0.0.0.0:${port}`);
+  log.info('Express', `Server on: http://localhost:${port}`);
 };
 
 // Create MongoDB URI
