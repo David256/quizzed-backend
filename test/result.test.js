@@ -92,6 +92,7 @@ describe('Result', () => {
       };
       chai.request(app)
         .post('/results')
+        .set('Content-Type', 'application/json')
         .send(badResultData)
         .end((err, res) => {
           expect(err).is.null;
@@ -115,6 +116,7 @@ describe('Result', () => {
       };
       chai.request(app)
         .post('/results')
+        .set('Content-Type', 'application/json')
         .send(resultData)
         .end((err, res) => {
           expect(err).is.null;
@@ -135,6 +137,7 @@ describe('Result', () => {
     it('should NOT PUT a non-existent result', (done) => {
       chai.request(app)
         .put('/results/non-existent-event-id')
+        .set('Content-Type', 'application/json')
         .send({})
         .end((err, res) => {
           expect(err).is.null;
@@ -172,6 +175,7 @@ describe('Result', () => {
         expect(error).is.null;
         chai.request(app)
           .put(`/results/${result.id}`)
+          .set('Content-Type', 'application/json')
           .send(resultUpdate)
           .end((err, res) => {
             expect(err).is.null;
