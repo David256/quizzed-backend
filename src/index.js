@@ -48,12 +48,12 @@ const cb = () => {
 const MONGODB_URI = `${process.env.MONGODB_PROTOCOL}://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DB}`;
 
 // Wait for MongoDB connection
-mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    log.info('MongoDB', 'DB connected');
-  })
-  .catch((err) => log.error('MongoDB connection', err));
+// mongoose
+//   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => {
+//     log.info('MongoDB', 'DB connected');
+//   })
+//   .catch((err) => log.error('MongoDB connection', err));
 
 // Config when the MongoDB connection emits an error event.
 mongoose.connection.on(
