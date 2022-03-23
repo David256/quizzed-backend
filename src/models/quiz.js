@@ -41,7 +41,7 @@ const QuestionSchema = Schema({
  *      type: object
  *      required:
  *        - name
- *        - results
+ *        - questions
  *      properties:
  *        id:
  *          type: string
@@ -49,7 +49,7 @@ const QuestionSchema = Schema({
  *        name:
  *          type: string
  *          description: The quiz name
- *        results:
+ *        questions:
  *          type: array
  *          description: A list with various questions
  *          items:
@@ -57,7 +57,7 @@ const QuestionSchema = Schema({
  *      example:
  *        id: 0
  *        name: 'final quiz'
- *        results:
+ *        questions:
  *          - questionId: 230
  *            question: 'It takes 23 seconds for blood to circulate through the body'
  *            answer: true
@@ -68,7 +68,7 @@ const QuestionSchema = Schema({
 const QuizSchema = Schema({
   id: { type: String, required: true },
   name: { type: String, required: true },
-  results: { type: [QuestionSchema], required: true },
+  questions: { type: [QuestionSchema], required: true },
 });
 
 module.exports = mongoose.models.Quiz || mongoose.Model('Quiz', QuizSchema);
