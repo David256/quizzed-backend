@@ -70,4 +70,4 @@ const ResultSchema = Schema({
   responses: { type: [ResponseSchema], required: true },
 });
 
-module.exports = mongoose.models.Result || mongoose.Model('Result', ResultSchema);
+module.exports = mongoose.models.Result || mongoose.model('Result', ResultSchema);

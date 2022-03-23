@@ -71,4 +71,4 @@ const QuizSchema = Schema({
   questions: { type: [QuestionSchema], required: true },
 });
 
-module.exports = mongoose.models.Quiz || mongoose.Model('Quiz', QuizSchema);
+module.exports = mongoose.models.Quiz || mongoose.model('Quiz', QuizSchema);
