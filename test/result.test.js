@@ -128,7 +128,6 @@ describe('Result', () => {
           expect(res.body).has.property('responses').has.lengthOf(2);
           expect(res.body.responses).to.have.deep.members(resultData.responses);
           done();
-          done();
         });
     });
   });
