@@ -54,8 +54,8 @@ describe('Result', () => {
       const quizId = 'the-quiz-id';
       const email = 'error418@mail.co';
       const responses = [
-        { questionId: 1, response: true },
-        { questionId: 2, response: false },
+        { questionId: 'id-1', response: true },
+        { questionId: 'id-2', response: false },
       ];
       // Create the Result object
       const createdResult = Result({
@@ -110,8 +110,8 @@ describe('Result', () => {
         quizId: 'the-quiz-id',
         email: 'herebedragons@mail.co',
         responses: [
-          { questionId: 1, response: true },
-          { questionId: 2, response: false },
+          { questionId: 'id-1', response: true },
+          { questionId: 'id-2', response: false },
         ],
       };
       chai.request(app)
@@ -152,8 +152,8 @@ describe('Result', () => {
       const quizId = 'the-quiz-id';
       const email = 'art.of.listen@mail.co';
       const responses = [
-        { questionId: 1, response: true },
-        { questionId: 2, response: false },
+        { questionId: 'id-1', response: true },
+        { questionId: 'id-2', response: false },
       ];
       // Create the Result object
       const createdResult = Result({
@@ -165,9 +165,9 @@ describe('Result', () => {
       // Update
       const resultUpdate = {
         responses: [
-          { questionId: 1, response: false },
-          { questionId: 2, response: false },
-          { questionId: 3, response: false },
+          { questionId: 'id-1', response: false },
+          { questionId: 'id-2', response: false },
+          { questionId: 'id-3', response: false },
         ],
       };
       createdResult.save((error, result) => {
@@ -209,8 +209,8 @@ describe('Result', () => {
       const quizId = 'the-quiz-id';
       const email = 'error418@mail.co';
       const responses = [
-        { questionId: 1, response: true },
-        { questionId: 2, response: false },
+        { questionId: 'id-1', response: true },
+        { questionId: 'id-2', response: false },
       ];
       // Create the Result object
       const createdResult = Result({

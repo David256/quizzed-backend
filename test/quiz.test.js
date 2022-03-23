@@ -53,8 +53,8 @@ describe('Quiz', () => {
       const id = 'the-quiz-id';
       const name = 'the-quiz-name';
       const questions = [
-        { questionId: 1, answer: true, question: '"1" == 1 in JS' },
-        { questionId: 2, answer: false, question: '0 === false in JS' },
+        { questionId: 'id-1', answer: true, question: '"1" == 1 in JS' },
+        { questionId: 'id-2', answer: false, question: '0 === false in JS' },
       ];
       // Create the Quiz object
       const createdQuiz = Quiz({
@@ -136,8 +136,8 @@ describe('Quiz', () => {
       const id = 'the-quiz-id';
       const name = 'the-quiz-name';
       const questions = [
-        { questionId: 1, answer: true, question: '"1" == 1 in JS' },
-        { questionId: 2, answer: false, question: '0 === false in JS' },
+        { questionId: 'id-1', answer: true, question: '"1" == 1 in JS' },
+        { questionId: 'id-1', answer: false, question: '0 === false in JS' },
       ];
       // Create the Quiz object
       const createdQuiz = Quiz({
@@ -148,7 +148,7 @@ describe('Quiz', () => {
       // Update
       const quizUpdate = {
         questions: [
-          { questionId: 1, answer: false, question: 'JS is for web only' },
+          { questionId: 'id-1', answer: false, question: 'JS is for web only' },
         ],
       };
       createdQuiz.save((error, quiz) => {
@@ -188,8 +188,8 @@ describe('Quiz', () => {
       const id = 'the-quiz-id';
       const name = 'the-quiz-name';
       const questions = [
-        { questionId: 1, answer: true, question: '"1" == 1 in JS' },
-        { questionId: 2, answer: false, question: '0 === false' },
+        { questionId: 'id-1', answer: true, question: '"1" == 1 in JS' },
+        { questionId: 'id-2', answer: false, question: '0 === false' },
       ];
       // Create the Quiz object
       const createdQuiz = Quiz({
