@@ -1,11 +1,11 @@
 const log = require('npmlog');
 const express = require('express');
-const quiz = require('./quiz');
+const quizzes = require('./quizzes');
 const results = require('./results');
 
 const router = express.Router();
 
-router.use(quiz);
+router.use(quizzes);
 router.use(results);
 
 router.get('/', (req, res) => {
