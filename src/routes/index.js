@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   log.verbose('Index', 'server the root endpoint and shows info');
   res.json({
     message: 'It works',
-    documentation: `${req.protocol}://${req.get('host')}/api-doc`,
+    documentation: `${req.protocol}://${req.get('host')}/api-docs`,
     source: 'https://github.com/David256/quizzed-backend.git',
   });
 });
