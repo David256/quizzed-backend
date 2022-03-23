@@ -12,6 +12,7 @@ if (process.env.VERBOSE) {
 
 // Add the API
 const api = require('./routes');
+const docs = require('./routes/docs');
 
 // Needed for development
 require('dotenv').config();
@@ -36,6 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Add the routers
 app.use(api);
+app.use(docs);
 
 const port = app.get('port');
 const cb = () => {
