@@ -31,7 +31,7 @@ const ResponseSchema = Schema({
  * @swagger
  * components:
  *  schemas:
- *    Results:
+ *    Result:
  *      type: object
  *      required:
  *        - id
@@ -41,7 +41,7 @@ const ResponseSchema = Schema({
  *      properties:
  *        id:
  *          type: string
- *          description: The results ID
+ *          description: The result ID
  *        quizId:
  *          type: string
  *          description: The quiz ID
@@ -63,11 +63,11 @@ const ResponseSchema = Schema({
  *          - questionId: 230
  *            response: false
  */
-const ResultsSchema = Schema({
+const ResultSchema = Schema({
   id: { type: String, required: true },
   quizId: { type: String, required: true },
   email: { type: String, required: true },
   responses: { type: [ResponseSchema], required: true },
 });
 
-module.exports = mongoose.models.Results || mongoose.Model('Results', ResultsSchema);
+module.exports = mongoose.models.Result || mongoose.Model('Result', ResultSchema);
