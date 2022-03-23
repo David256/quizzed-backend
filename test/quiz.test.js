@@ -57,7 +57,7 @@ describe('Quiz', () => {
         { questionId: 'id-2', answer: false, question: '0 === false in JS' },
       ];
       // Create the Quiz object
-      const createdQuiz = Quiz({
+      const createdQuiz = new Quiz({
         id,
         name,
         questions,
@@ -73,7 +73,9 @@ describe('Quiz', () => {
             expect(res.body).has.property('id').that.is.equal(id);
             expect(res.body).has.property('name').that.is.equal(name);
             expect(res.body).has.property('questions').has.lengthOf(2);
-            expect(res.body.questions).to.have.deep.members(questions);
+            expect(res.body.questions[0]).to.include(questions[0]);
+            expect(res.body.questions[1]).to.include(questions[1]);
+
             done();
           });
       });
@@ -90,7 +92,7 @@ describe('Quiz', () => {
         .end((err, res) => {
           expect(err).is.null;
           expect(res).has.status(400);
-          expect(res.body).has.property('statusCode').that.is.equal('400');
+          expect(res.body).has.property('statusCode').that.is.equal(400);
           expect(res.body).has.property('message');
           done();
         });
@@ -140,7 +142,7 @@ describe('Quiz', () => {
         { questionId: 'id-1', answer: false, question: '0 === false in JS' },
       ];
       // Create the Quiz object
-      const createdQuiz = Quiz({
+      const createdQuiz = new Quiz({
         id,
         name,
         questions,
@@ -164,7 +166,7 @@ describe('Quiz', () => {
             expect(res.body).has.property('id').that.is.equal(id);
             expect(res.body).has.property('name').that.is.equal(name);
             expect(res.body).has.property('questions').has.lengthOf(1);
-            expect(res.body.questions).to.have.deep.members(quizUpdate.questions);
+            expect(res.body.questions[0]).to.include(quizUpdate.questions[0]);
             done();
           });
       });
@@ -192,7 +194,7 @@ describe('Quiz', () => {
         { questionId: 'id-2', answer: false, question: '0 === false' },
       ];
       // Create the Quiz object
-      const createdQuiz = Quiz({
+      const createdQuiz = new Quiz({
         id,
         name,
         questions,

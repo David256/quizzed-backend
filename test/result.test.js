@@ -58,7 +58,7 @@ describe('Result', () => {
         { questionId: 'id-2', response: false },
       ];
       // Create the Result object
-      const createdResult = Result({
+      const createdResult = new Result({
         id,
         quizId,
         email,
@@ -76,7 +76,8 @@ describe('Result', () => {
             expect(res.body).has.property('quizId').that.is.equal(quizId);
             expect(res.body).has.property('email').that.is.equal(email);
             expect(res.body).has.property('responses').has.lengthOf(2);
-            expect(res.body.responses).to.have.deep.members(responses);
+            expect(res.body.responses[0]).to.include(responses[0]);
+            expect(res.body.responses[1]).to.include(responses[1]);
             done();
           });
       });
@@ -86,7 +87,6 @@ describe('Result', () => {
   describe('/POST results', () => {
     it('should NOT POST a result object with missing data', (done) => {
       const badResultData = {
-        id: 'the-result-id',
         quizId: 'the-quiz-id',
         email: 'nobody@mail.co',
       };
@@ -97,7 +97,7 @@ describe('Result', () => {
         .end((err, res) => {
           expect(err).is.null;
           expect(res).has.status(400);
-          expect(res.body).has.property('statusCode').that.is.equal('400');
+          expect(res.body).has.property('statusCode').that.is.equal(400);
           expect(res.body).has.property('message');
           done();
         });
@@ -106,7 +106,6 @@ describe('Result', () => {
     it('should POST a result object', (done) => {
       // These are data to create a temporal Result object
       const resultData = {
-        id: 'the-result-id',
         quizId: 'the-quiz-id',
         email: 'herebedragons@mail.co',
         responses: [
@@ -122,11 +121,12 @@ describe('Result', () => {
           expect(err).is.null;
           expect(res).has.status(200);
           expect(res.body).is.an('object');
-          expect(res.body).has.property('id').that.is.equal(resultData.id);
+          expect(res.body).has.property('id');
           expect(res.body).has.property('quizId').that.is.equal(resultData.quizId);
           expect(res.body).has.property('email').that.is.equal(resultData.email);
           expect(res.body).has.property('responses').has.lengthOf(2);
-          expect(res.body.responses).to.have.deep.members(resultData.responses);
+          expect(res.body.responses[0]).to.include(resultData.responses[0]);
+          expect(res.body.responses[1]).to.include(resultData.responses[1]);
           done();
         });
     });
@@ -156,7 +156,7 @@ describe('Result', () => {
         { questionId: 'id-2', response: false },
       ];
       // Create the Result object
-      const createdResult = Result({
+      const createdResult = new Result({
         id,
         quizId,
         email,
@@ -184,7 +184,9 @@ describe('Result', () => {
             expect(res.body).has.property('quizId').that.is.equal(quizId);
             expect(res.body).has.property('email').that.is.equal(email);
             expect(res.body).has.property('responses').has.lengthOf(3);
-            expect(res.body.responses).to.have.deep.members(resultUpdate.responses);
+            expect(res.body.responses[0]).to.include(resultUpdate.responses[0]);
+            expect(res.body.responses[1]).to.include(resultUpdate.responses[1]);
+            expect(res.body.responses[2]).to.include(resultUpdate.responses[2]);
             done();
           });
       });
@@ -213,7 +215,7 @@ describe('Result', () => {
         { questionId: 'id-2', response: false },
       ];
       // Create the Result object
-      const createdResult = Result({
+      const createdResult = new Result({
         id,
         quizId,
         email,
