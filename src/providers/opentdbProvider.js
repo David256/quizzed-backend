@@ -1,4 +1,5 @@
 const log = require('npmlog');
+const { v4: uuid } = require('uuid');
 const axios = require('axios').default;
 
 /**
@@ -27,8 +28,53 @@ async function opentdbProvider(cb, amount) {
       },
     });
 
-    if (typeof cb === 'function') cb(response.data);
-    return response.data;
+    const processedData = response.data.results.map((result) => {
+      // Choose some answer and set `answer` according to choosing
+      let answer;
+      let chosenAnswer;
+      if (Math.random() < 0.5) {
+        // Choose a good answer
+        chosenAnswer = result.correct_answer;
+        answer = true;
+      } else {
+        // Choose a bad answer randomly
+        chosenAnswer = result.incorrect_answers[
+          Math.floor(Math.random() * result.incorrect_answers.length)
+        ];
+        answer = false;
+      }
+      log.verbose('manager:processedData', `answer ${chosenAnswer} is ${answer}`);
+
+      // Remove dot and semicolon symbols in the end of string.
+      /** @type { String } */
+      let originalQuestion = result.question.trim();
+      if (originalQuestion.endsWith('.') || originalQuestion.endsWith(';')) {
+        originalQuestion = originalQuestion.slice(0, originalQuestion.length - 1);
+      }
+      log.verbose(
+        'manager:processedData',
+        'original question changed by "%s"',
+        originalQuestion,
+      );
+
+      // Humanize the question
+      if (['True', 'False'].includes(chosenAnswer)) {
+        chosenAnswer = chosenAnswer === 'True' ? 'yes' : 'not';
+      } else {
+        chosenAnswer = `"${chosenAnswer}"`;
+      }
+      log.verbose('processedData', 'chosen answer is %s', chosenAnswer);
+
+      const question = `${originalQuestion}? the correct answer is ${chosenAnswer}`;
+      return {
+        questionId: uuid(),
+        question,
+        answer,
+      };
+    });
+
+    if (typeof cb === 'function') cb(processedData);
+    return processedData;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
