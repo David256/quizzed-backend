@@ -6,6 +6,8 @@ const chaiHttp = require('chai-http');
 // Prepare MongoDB
 require('mongoose');
 
+process.env.NODE_ENV = 'test';
+
 // Get the model to test
 /** @type { import('mongoose').Model } */
 const Quiz = require('../src/models/quiz');
