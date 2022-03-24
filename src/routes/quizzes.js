@@ -13,6 +13,9 @@ const {
 
 const router = express.Router();
 
+const questionAmount = Number.parseInt(process.env.AMOUNT, 10) || 10;
+log.verbose('quizzes', 'question amount is %d', questionAmount);
+
 /**
  * @swagger
  * components:
@@ -121,6 +124,13 @@ router.get('/quizzes/:id', (req, res) => {
  *  post:
  *    summary: Create a new quiz.
  *    description: Receive data to create a new quiz and return it.
+ *    parameters:
+ *      - name: provider
+ *        in: query
+ *        description: This parameter set the wanted provider to use.
+ *        required: false
+ *        schema:
+ *          type: string
  *    requestBody:
  *      description: the quiz name to create a new quiz
  *      required: true
@@ -152,6 +162,8 @@ router.get('/quizzes/:id', (req, res) => {
  */
 router.post('/quizzes', async (req, res) => {
   const { name } = req.body;
+  const { provider: wantedProvider } = req.query;
+  log.verbose('/POST quizzes', 'wanted provider is %s', wantedProvider);
 
   if (!name) {
     buildErrorJSON(res, 400, 'Missing parameter "name"');
@@ -166,25 +178,29 @@ router.post('/quizzes', async (req, res) => {
     log.verbose('/POST quizzes', 'question filter will be "local"');
     questionFilter = providerNames.local;
   } else {
-    questionFilter = null;
+    questionFilter = (wantedProvider in providerNames) ? wantedProvider : null;
   }
-
-  // Create a question provider
-  const questionProvider = createQuestionProviderManager(questionFilter, 10);
+  log.verbose('/POST quizzes', 'provider filter is %s', questionFilter);
 
   const questions = [];
   try {
+    // Create a question provider
+    const questionProvider = createQuestionProviderManager(questionFilter, questionAmount);
     const providedQuestion = await questionProvider();
     questions.push(...providedQuestion);
   } catch (err) {
     log.error('/POST quizzes', err);
     if (err instanceof NoApiTokenError) {
-      const otherQuestionProvider = createQuestionProviderManager(null, 10);
+      // Delegate provider choosing to the manager setting filter to null
+      const otherQuestionProvider = createQuestionProviderManager(null, questionAmount);
       const providedQuestion = await otherQuestionProvider();
       questions.push(...providedQuestion);
     } else {
-      // Force use local provider
-      const locaQuestionProvider = createQuestionProviderManager(providerNames.local, 10);
+      // Maybe connection error. Force to use local provider
+      const locaQuestionProvider = createQuestionProviderManager(
+        providerNames.local,
+        questionAmount,
+      );
       const providedQuestion = await locaQuestionProvider();
       questions.push(...providedQuestion);
     }
