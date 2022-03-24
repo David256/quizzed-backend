@@ -1,6 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 const log = require('npmlog');
 const express = require('express');
 const { v4: uuid } = require('uuid');
+const Quiz = require('../models/quiz');
+const buildErrorJSON = require('../helpers/buildErrorJSON');
+const getQuestions = require('../helpers/getQuestions');
 
 const router = express.Router();
 
@@ -40,7 +44,22 @@ const router = express.Router();
  *      500:
  *        description: Internal server error.
  */
-router.get('/quizzes', (req, res) => {});
+router.get('/quizzes', (req, res) => {
+  Quiz.find({}, {}, {}, (err, data) => {
+    if (err) {
+      log.error('/GET quizzes', err);
+      res.sendStatus(500);
+    }
+
+    const documents = [...data].map((document) => {
+      const clone = { ...document.toObject() };
+      delete clone._id;
+      return clone;
+    });
+
+    res.json(documents);
+  });
+});
 
 /**
  * @swagger
@@ -71,7 +90,25 @@ router.get('/quizzes', (req, res) => {});
  *      500:
  *        description: Internal server error.
  */
-router.get('/quizzes/:id', (req, res) => {});
+router.get('/quizzes/:id', (req, res) => {
+  const { id } = req.params;
+  Quiz.findOne({ id }, {}, {}, (err, data) => {
+    if (err) {
+      log.error('/GET:id quizzes', err);
+      log.verbose('/GET:id quizzes', `cannot find for id=${id}`);
+      res.sendStatus(500);
+      return;
+    }
+
+    if (data) {
+      const document = { ...data.toObject() };
+      delete document._id;
+      res.json(document);
+    } else {
+      buildErrorJSON(res, 404, `no quizzes found for id "${id}"`);
+    }
+  });
+});
 
 /**
  * @swagger
@@ -108,7 +145,37 @@ router.get('/quizzes/:id', (req, res) => {});
  *      500:
  *        description: Internal server error.
  */
-router.post('/quizzes', (req, res) => {});
+router.post('/quizzes', (req, res) => {
+  const { name } = req.body;
+
+  if (!name) {
+    buildErrorJSON(res, 400, 'Missing parameter "name"');
+    return;
+  }
+
+  log.verbose('/POST quizzes', `name = "${name}"`);
+
+  const data = {
+    id: uuid(),
+    name,
+    questions: getQuestions(),
+  };
+  log.verbose('>', data);
+  const quiz = new Quiz(data);
+
+  quiz.save((err, doc) => {
+    if (err) {
+      log.error('/POST:id quizzes', err);
+      log.error('/POST:id quizzes', `cannot create for name=${name}`);
+      res.sendStatus(500);
+      return;
+    }
+
+    const document = { ...doc.toObject() };
+    delete document._id;
+    res.json(document);
+  });
+});
 
 /**
  * @swagger
@@ -153,7 +220,28 @@ router.post('/quizzes', (req, res) => {});
  *      500:
  *        description: Internal server error.
  */
-router.put('/quizzes/:id', (req, res) => {});
+router.put('/quizzes/:id', (req, res) => {
+  const { id } = req.params;
+  log.verbose('/PUT:id quizzes', 'put id = %s', id);
+
+  Quiz.findOneAndUpdate({ id }, req.body, { new: true }, (err, data) => {
+    if (err) {
+      log.error('/PUT:id quizzes', err);
+      log.error('/PUT:id quizzes', `cannot find & update for id=${id}`);
+      res.sendStatus(500);
+      return;
+    }
+
+    if (data) {
+      const document = { ...data.toObject() };
+      delete document._id;
+      res.json(document);
+    } else {
+      log.verbose('/PUT:id quizzes', 'no data');
+      buildErrorJSON(res, 404, `No result found for id "${id}"`);
+    }
+  });
+});
 
 /**
  * @swagger
@@ -180,6 +268,25 @@ router.put('/quizzes/:id', (req, res) => {});
  *      500:
  *        description: Internal server error.
  */
-router.delete('/quizzes/:id', (req, res) => {});
+router.delete('/quizzes/:id', (req, res) => {
+  const { id } = req.params;
+  log.verbose('/DELETE:id quizzes', 'delete id = %s', id);
+  Quiz.deleteOne({ id }, (err, query) => {
+    if (err) {
+      log.error('/DELETE:id quizzes', err);
+      log.error('/DELETE:id quizzes', `cannot delete for id=${id}`);
+      res.sendStatus(500);
+      return;
+    }
+
+    if (query.deletedCount === 0) {
+      log.verbose('/DELETE:id quizzes', 'no data');
+      buildErrorJSON(res, 404, `No result found for id "${id}"`);
+      return;
+    }
+
+    res.sendStatus(204);
+  });
+});
 
 module.exports = router;
