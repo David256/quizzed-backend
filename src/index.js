@@ -52,6 +52,7 @@ mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     log.info('MongoDB', 'DB connected');
+    app.listen(port, cb);
   })
   .catch((err) => log.error('MongoDB connection', err));
 
@@ -61,7 +62,5 @@ mongoose.connection.on(
   log.error.bind(log.error, 'MongoDB error event'),
 );
 
-const server = app.listen(port, cb);
-
 // For testing
-module.exports = server;
+module.exports = app;
