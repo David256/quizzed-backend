@@ -4,7 +4,12 @@ const express = require('express');
 const { v4: uuid } = require('uuid');
 const Quiz = require('../models/quiz');
 const buildErrorJSON = require('../helpers/buildErrorJSON');
-const getQuestions = require('../helpers/getQuestions');
+
+const {
+  createQuestionProviderManager,
+  providerNames,
+  NoApiTokenError,
+} = require('../providers/createQuestionProviderManager');
 
 const router = express.Router();
 
@@ -145,7 +150,7 @@ router.get('/quizzes/:id', (req, res) => {
  *      500:
  *        description: Internal server error.
  */
-router.post('/quizzes', (req, res) => {
+router.post('/quizzes', async (req, res) => {
   const { name } = req.body;
 
   if (!name) {
@@ -155,10 +160,40 @@ router.post('/quizzes', (req, res) => {
 
   log.verbose('/POST quizzes', `name = "${name}"`);
 
+  let questionFilter;
+  // If we are testing, the filter must be local just because
+  if (process.env.NODE_ENV === 'test') {
+    log.verbose('/POST quizzes', 'question filter will be "local"');
+    questionFilter = providerNames.local;
+  } else {
+    questionFilter = null;
+  }
+
+  // Create a question provider
+  const questionProvider = createQuestionProviderManager(questionFilter, 10);
+
+  const questions = [];
+  try {
+    const providedQuestion = await questionProvider();
+    questions.push(...providedQuestion);
+  } catch (err) {
+    log.error('/POST quizzes', err);
+    if (err instanceof NoApiTokenError) {
+      const otherQuestionProvider = createQuestionProviderManager(null, 10);
+      const providedQuestion = await otherQuestionProvider();
+      questions.push(...providedQuestion);
+    } else {
+      // Force use local provider
+      const locaQuestionProvider = createQuestionProviderManager(providerNames.local, 10);
+      const providedQuestion = await locaQuestionProvider();
+      questions.push(...providedQuestion);
+    }
+  }
+
   const data = {
     id: uuid(),
     name,
-    questions: getQuestions(),
+    questions,
   };
   log.verbose('>', data);
   const quiz = new Quiz(data);
