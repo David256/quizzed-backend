@@ -11,7 +11,7 @@ router.use(results);
 router.get('/', (req, res) => {
   log.verbose('Index', 'server the root endpoint and shows info');
   res.json({
-    message: 'It still does not work. Only api documentation',
+    message: 'It works',
     documentation: `${req.protocol}://${req.get('host')}/api-docs`,
     source: 'https://github.com/David256/quizzed-backend.git',
   });
