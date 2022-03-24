@@ -19,7 +19,9 @@ chai.use(chaiHttp);
 
 describe('Result', () => {
   beforeEach((done) => {
-    Result.deleteMany({}, done);
+    Result.deleteMany({}).then(() => {
+      done();
+    });
   });
 
   describe('/GET results', () => {

@@ -19,7 +19,9 @@ chai.use(chaiHttp);
 
 describe('Quiz', () => {
   beforeEach((done) => {
-    Quiz.deleteMany({}, done);
+    Quiz.deleteMany({}).then(() => {
+      done();
+    });
   });
 
   describe('/GET quizzes', () => {
