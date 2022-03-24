@@ -1,4 +1,5 @@
 const log = require('npmlog');
+const { v4: uuid } = require('uuid');
 const axios = require('axios').default;
 
 /**
@@ -50,8 +51,36 @@ async function quizapiProvider(cb, amount) {
       },
     });
 
-    if (typeof cb === 'function') cb(response.data);
-    return response.data;
+    const processedData = response.data.map((quiz) => {
+      const { answers, correct_answers: correctAnswers } = quiz;
+      // Get a key randomly
+      const keys = Object.keys(answers);
+      const answerKey = keys[Math.floor(Math.random() * keys.length)];
+      log.verbose('processedData', 'key = %s', answerKey);
+
+      let chosenAnswer = answers[answerKey];
+      if (chosenAnswer === null) {
+        chosenAnswer = 'none';
+      }
+      log.verbose('processedData', 'chosenAnswer is "%s"', chosenAnswer);
+
+      // Check if that answer is correct;
+      const correctKey = `${answerKey}_correct`;
+      log.verbose('processedData', 'correctKey = %s', correctKey);
+
+      const answer = (correctAnswers[correctKey] === 'true');
+      log.verbose('processedData', `answer is ${answer}`);
+      const question = `${quiz.question}, the correct answer is "${chosenAnswer}"`;
+
+      return {
+        questionId: uuid(),
+        question,
+        answer,
+      };
+    });
+
+    if (typeof cb === 'function') cb(processedData);
+    return processedData;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code
