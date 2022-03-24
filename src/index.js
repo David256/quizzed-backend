@@ -26,7 +26,7 @@ app.set('port', process.env.PORT || 3000);
 // Add middlewares
 app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json()); // Config this later
+app.use(express.json({ extended: true }));
 
 // Config this middleware for logging
 if (process.env.NODE_ENV === 'production') {
