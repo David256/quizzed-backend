@@ -39,6 +39,7 @@ log.verbose('quizzes', 'question amount is %d', questionAmount);
  * /quizzes:
  *  get:
  *    summary: Get all the quizzes.
+ *    tags: ['quizzes']
  *    description: Get all the existent quizzes.
  *    responses:
  *      200:
@@ -74,6 +75,7 @@ router.get('/quizzes', (req, res) => {
  * /quizzes/{id}:
  *  get:
  *    summary: Get a quiz by ID.
+ *    tags: ['quizzes']
  *    description: Get a specify quiz by given ID.
  *    parameters:
  *      - name: id
@@ -123,6 +125,7 @@ router.get('/quizzes/:id', (req, res) => {
  * /quizzes:
  *  post:
  *    summary: Create a new quiz.
+ *    tags: ['quizzes']
  *    description: Receive data to create a new quiz and return it.
  *    parameters:
  *      - name: provider
@@ -233,6 +236,7 @@ router.post('/quizzes', async (req, res) => {
  * /quizzes/{id}:
  *  put:
  *    summary: Update a quiz by ID.
+ *    tags: ['quizzes']
  *    description: Update a specify quiz by given ID.
  *    parameters:
  *      - name: id
@@ -299,6 +303,7 @@ router.put('/quizzes/:id', (req, res) => {
  * /quizzes/{id}:
  *  delete:
  *    summary: Delete a quiz by ID.
+ *    tags: ['quizzes']
  *    description: Delete a specify quiz by given ID.
  *    parameters:
  *      - name: id

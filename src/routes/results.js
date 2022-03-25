@@ -12,6 +12,7 @@ const router = express.Router();
  * /results:
  *  get:
  *    summary: Get all the results.
+ *    tags: ['results']
  *    description: Get all the existent results.
  *    responses:
  *      200:
@@ -48,6 +49,7 @@ router.get('/results', (req, res) => {
  * /results/{id}:
  *  get:
  *    summary: Get a result by ID.
+ *    tags: ['results']
  *    description: Get a specify result by given ID.
  *    parameters:
  *      - name: id
@@ -101,6 +103,7 @@ router.get('/results/:id', (req, res) => {
  * /results:
  *  post:
  *    summary: Create a new result.
+ *    tags: ['results']
  *    description: Receive data to create a new result and return it.
  *    requestBody:
  *      description: the quiz result to add.
@@ -161,6 +164,7 @@ router.post('/results', (req, res) => {
  * /results/{id}:
  *  put:
  *    summary: Update a result by ID.
+ *    tags: ['results']
  *    description: Update a specify result by given ID.
  *    parameters:
  *      - name: id
@@ -227,6 +231,7 @@ router.put('/results/:id', (req, res) => {
  * /results/{id}:
  *  delete:
  *    summary: Delete a result by ID.
+ *    tags: ['results']
  *    description: Delete a specify result by given ID.
  *    parameters:
  *      - name: id
