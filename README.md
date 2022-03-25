@@ -26,4 +26,7 @@ Some environment variables can be defined to config the server. Next will be des
 | MONGODB_PASSWORD | The user password |
 | MONGODB_HOST     | The MongoDB database host |
 | MONGODB_DB       | The database |
-| SECRET_API_TOKEN | The API token for quizapi.io service |
+| SECRET_API_TOKEN | (optional) The API token for quizapi.io service |
+| PORT             | (optional, default 3000) The connection port |
+| VERBOSE          | (optional) Enable verbose mode |
+| AMOUNT           | (optional, default 10) The question amount to create |
