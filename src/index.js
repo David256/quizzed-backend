@@ -2,6 +2,7 @@ const log = require('npmlog');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const cors = require('cors');
 const mongoose = require('mongoose');
 
 // Config the logger
@@ -25,6 +26,9 @@ app.set('port', process.env.PORT || 3000);
 
 // Add middlewares
 app.use(helmet());
+app.use(cors({
+  origin: '*',
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ extended: true }));
 
