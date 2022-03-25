@@ -16,18 +16,43 @@ function getQuestions() {
   return [
     {
       questionId: uuid(),
-      question: 'A',
+      question: 'Python is an interpreted language',
+      answer: true,
+    },
+    {
+      questionId: uuid(),
+      question: 'ExpressJS is a code library to image processing',
       answer: false,
     },
     {
       questionId: uuid(),
-      question: 'B',
+      question: 'Javascript allows us to execute the function asynchronously',
+      answer: true,
+    },
+    {
+      questionId: uuid(),
+      question: 'Javascript is the same as Java',
       answer: false,
     },
     {
       questionId: uuid(),
-      question: 'C',
+      question: 'The isNaN function allows to know if a passed value is an array',
       answer: false,
+    },
+    {
+      questionId: uuid(),
+      question: 'All Docker images contain a mini-OS with all minimum needed to work',
+      answer: true,
+    },
+    {
+      questionId: uuid(),
+      question: 'HTTP code 204 means that the resource is located in another location',
+      answer: false,
+    },
+    {
+      questionId: uuid(),
+      question: 'CORS means cross-origin resource sharing',
+      answer: true,
     },
   ];
 }
